@@ -1,30 +1,22 @@
 import streamlit as st
 from transformers import pipeline
 
-# model_name = "facebook/bart-large-cnn"
-# tokenizer = BartTokenizer.from_pretrained(model_name)
-# model = BartForConditionalGeneration.from_pretrained(model_name)
+# import psutil
 
-summarizer = pipeline('summarization', model = 'luisotorres/bart-finetuned-samsum')
+# process = psutil.Process()
+# memory_usage = process.memory_info().rss / (1024 ** 2)  # in megabytes
+# print(f"Memory Usage: {memory_usage} MB")
+
+
+@st.cache_data
+def get_summarizer():
+    return pipeline('summarization', model='luisotorres/bart-finetuned-samsum')
+
 
 def generate_summary(text):
-    # inputs = tokenizer.encode("summarize: " + text, return_tensors="pt", max_length=1024, truncation=True)
-    # summary_ids = model.generate(inputs, max_length=150, min_length=50, length_penalty=2.0, num_beams=4, early_stopping=True)
-    # summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+    summarizer = get_summarizer()
     summary = summarizer(text)[0]['summary_text']
     return summary
-
-# st.write("""
-# # Text Summarization
-
-# Enter your long-form text below to get a summary!
-
-# """)
-
-# st.text_area(
-#             "",
-#             placeholder="Enter your long form input here",
-#         )
 
 def main():
     st.title("Text Summarization with BART")
