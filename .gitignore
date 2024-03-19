@@ -1,0 +1,5 @@
+*.json
+summ_sl_app/
+check_memory_usage.py
+zip to submit/
+*zip
